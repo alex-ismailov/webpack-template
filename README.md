@@ -20,11 +20,11 @@ module.exports = {
     app: './src/index.js'
   },
   output : {
-    filename: '[name].js' // про [] см. https://youtu.be/JcKRovPhGo8?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=858
-    path: path.resolve(__dirname, './dist'), // https://youtu.be/JcKRovPhGo8?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=936
+    filename: '[name].js'
+    path: path.resolve(__dirname, './dist'),
     publicPath: '/dist', // необх. для коррект. работы devServer
   },
-  module: { // настройка babel https://youtu.be/JcKRovPhGo8?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=1436
+  module: {
     rules: [{
       test: /\.js$/,
       loader: 'babel-loader',
@@ -36,6 +36,10 @@ module.exports = {
   }
 };
 ```
+* [filename: '[name].js' // про []](https://youtu.be/JcKRovPhGo8?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=858)
+* [path: path.resolve(__dirname, './dist')](https://youtu.be/JcKRovPhGo8?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=936)
+* [настройка babel](https://youtu.be/JcKRovPhGo8?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=1436)
+
 Далее
 
 `touch index.html`
