@@ -1,4 +1,4 @@
-# ![react-redux logo](https://github.com/alex-ismailov/git-imgs/blob/master/webpack-logo.png) 4
+# ![webpack-logo](https://github.com/alex-ismailov/git-imgs/blob/master/webpack-logo.png)
 
 По курсу от [Jack Coder](https://www.youtube.com/channel/UCDtQ4kJos22sCdYtNDB_4Cg) [Настройка Webpack 4](https://www.youtube.com/watch?v=JcKRovPhGo8&list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV)
 
