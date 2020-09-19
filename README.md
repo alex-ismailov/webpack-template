@@ -148,7 +148,7 @@ module: {
 ##### Обработка scss ([got to video](https://youtu.be/qqTIqwQX8nc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=456))
 
 В массив use лучше передавать объекты, так как в объектах помимо названия loader с ним можно передать конфиг в `options`
-
+```
 module: {
     rules: [{
       ...
@@ -168,6 +168,7 @@ module: {
     }, {
     ...
   },
+```
 
 далее 
 
@@ -193,8 +194,7 @@ module: {
 
 ##### autoprefixer
 
-Далее разберемся с postCss плагинами на примере `autoprefixer` (go to video)[https://youtu.be/qqTIqwQX8nc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=641]
-
+Далее разберемся с postCss плагинами на примере `autoprefixer` ([go to video](https://youtu.be/qqTIqwQX8nc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=641))
 [PostCSS on github](https://github.com/postcss/postcss)
 
 Для того чтобы было удобно подключать PostCss плагины созадим отдельный конфиг для postCss ./postcss.config.js
@@ -221,7 +221,7 @@ module.exports = {
 };
 ```
 
-Далее настроим autoprefixer через package.json, если мы не знаем что именно писать, то можно взять настройки от автора: (go to video)[https://youtu.be/qqTIqwQX8nc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=790]
+Далее настроим autoprefixer через package.json, если мы не знаем что именно писать, то можно взять настройки от автора: ([go to video](https://youtu.be/qqTIqwQX8nc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=790))
 
 в `package.json` добавл.
 ```
@@ -301,7 +301,7 @@ h3 {
 h1,h2,h3{color:#00f}
 ```
 
-Далее напишем общий каскад для нашего scss, для этого реструктурируем папку ./src/scss/ и добавим туда файлы ((go to video)[https://youtu.be/qqTIqwQX8nc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=1064]):
+Далее напишем общий каскад для нашего scss, для этого реструктурируем папку ./src/scss/ и добавим туда файлы ([go to video](https://youtu.be/qqTIqwQX8nc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=1064)):
 ```
 /scss
   /modules
@@ -314,7 +314,7 @@ h1,h2,h3{color:#00f}
     vars.scss
   main.scss
 ```
-Первым делом ипортируем libs ((go to video)[https://youtu.be/qqTIqwQX8nc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=1082])
+Первым делом ипортируем libs ([go to video](https://youtu.be/qqTIqwQX8nc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=1082))
 
 в большинстве случаев css и sass библиотеки подключаются через ./src/scss/utils/libs.scss
 ```
@@ -332,13 +332,13 @@ h1,h2,h3{color:#00f}
 @import "utils/fonts";
 @import "utils/reset";
 ```
-Далее рассмотрим vars.scss - @import "utils/vars" ((go to video)[https://youtu.be/qqTIqwQX8nc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=1138]);
+Далее рассмотрим vars.scss - @import "utils/vars" ([go to video](https://youtu.be/qqTIqwQX8nc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=1138));
 
-(utils/vars.scss on github)[https://github.com/alex-ismailov/webpack-template/blob/master/src/scss/utils/vars.scss]
+[utils/vars.scss on github](https://github.com/alex-ismailov/webpack-template/blob/master/src/scss/utils/vars.scss)
 
 `$success-color: #26de81` - такое название лучше чем например $green-color.
 
-Затем идет адаптив - @import "utils/mixins"; - очень крутая штука ((go to video)[https://youtu.be/qqTIqwQX8nc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=1219])
+Затем идет адаптив - @import "utils/mixins"; - очень крутая штука ([go to video](https://youtu.be/qqTIqwQX8nc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=1219))
 
 // src/scss/utils/mixins.scss
 
@@ -369,5 +369,5 @@ h1,h2,h3{color:#00f}
 
 Особое внимание заслуживает mixin - `@function`
 
-Магия, адаптивный размер шрифта: (go to video)[https://youtu.be/qqTIqwQX8nc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=1387]
+Магия, адаптивный размер шрифта: ([go to video](https://youtu.be/qqTIqwQX8nc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=1387))
 мы можем писать сколько угодно @madia запросов, css-mqpacker сгруппирует и оптимизирует их всех в одно место в app.css
