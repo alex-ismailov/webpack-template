@@ -237,6 +237,10 @@ module.exports = {
 
 `npm i --save-dev postcss-loader autoprefixer css-mqpacker cssnano`
 
+!!! *postcss.config.js правильнее положить в корень, на уровне с остальными конфигами.
+В таком случае он сам определяется, его не нужно подключать в webpack.config.js*
+!!!
+
 Затем в `webpack.config.js` передаем postcss-loader в scss и css обработчики:
 
 ```
@@ -330,43 +334,7 @@ h1,h2,h3{color:#00f}
 ```
 Далее рассмотрим vars.scss - @import "utils/vars" ((go to video)[https://youtu.be/qqTIqwQX8nc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=1138]);
 
-```
-// Font
-$mainFont                : 'Montserrat', Helvetica, Arial, sans-serif;
-
-// Size
-$mainFontColor           : #101010;
-$mainFontSize            : 18px;
-$mainFontWeight          : 400;
-$mainLineHeight          : 1.4;
-
-$desktopWidth            : 1280px;
-$smDesktopWidth          : 980px;
-$tableWidth              : 768px;
-$phoneWidth              : 480px;
-$smPhoneWidth            : 320px;
-
-// Main color
-$default-color           : #ffffff;
-$primary-color           : #444ce0;
-$success-color           : #26de81;
-$danger-color            : #fc5c65;
-$warning-color           : #fed330;
-$light-color             : #999999;
-$purple-color            : #8854d0;
-
-// Neutral Color
-$neutral-primary         : #303133;
-$neutral-regular         : #606266;
-$neutral-secondary       : #909399;
-$neutral-placeholder     : #C0C4CC;
-
-// Border Color
-$border-base             : #DCDFE6;
-$border-light            : #E4E7ED;
-$border-lighter          : #EBEEF5;
-$border-lightex          : #F2F6FC;
-```
+(utils/vars.scss on github)[https://github.com/alex-ismailov/webpack-template/blob/master/src/scss/utils/vars.scss]
 
 `$success-color: #26de81` - такое название лучше чем например $green-color.
 
@@ -399,7 +367,7 @@ $border-lightex          : #F2F6FC;
 }
 ```
 
-Особое внимание заслуживает mixin - @function
+Особое внимание заслуживает mixin - `@function`
 
-Магия, адаптивный размер шрифта: https://youtu.be/qqTIqwQX8nc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=1387
+Магия, адаптивный размер шрифта: (go to video)[https://youtu.be/qqTIqwQX8nc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=1387]
 мы можем писать сколько угодно @madia запросов, css-mqpacker сгруппирует и оптимизирует их всех в одно место в app.css
