@@ -73,3 +73,164 @@ module: { //
 // import Vue from 'vue'; // способ 2
 window.Vue = require('vue'); // способ 3, считается наиболле приавильным.
 ```
+
+### [2 лекция](https://www.youtube.com/watch?v=qqTIqwQX8nc&list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&index=2) - Полная настройка Webpack 4 препроцессоров. Sass, настройка post css плагинов, минификация стилей.
+
+#### Подключение css и scss
+
+`mkdir ./src/css ./src/scss`
+
+`touch ./src/css/main.css ./src/scss/main.scss`
+
+подключаем стили в `./src/index.js`
+
+`import './css/main.css';`
+
+подключаем css-loader для отделения js от css ([got to video](https://youtu.be/qqTIqwQX8nc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=151))
+
+`npm i mini-css-extract-plugin --save-dev`
+
+указываем в `webpack.config.js` в разделе `module`:
+
+```
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
+...
+module: {
+  rules: [{
+    ...
+  }, {
+    test: /\.css$/,
+    use: [
+      MiniCssExtractPlugin.loader,
+      'css-loader',
+    ],
+  }],
+},
+...
+```
+
+далее регистрируем плагин указываем в `webpack.config.js` в разделе `plugins` ([go to video](https://youtu.be/qqTIqwQX8nc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=308)):
+
+```
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: "[name].css",
+    }),
+  ],
+```
+затем
+
+`npm i --save-dev css-loader style-loader`
+
+в ./index.html добавляем
+
+`<link rel="stylesheet" href="/dist/app.css">`
+
+Обработка scss ([got to video](https://youtu.be/qqTIqwQX8nc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=456))
+
+module: {
+    rules: [{
+      ...
+    }, {
+      test: /\.scss$/,
+      use: [
+        "style-loader",
+        MiniCssExtractPlugin.loader,
+        {
+          loader: "css-loader",
+          options: { sourceMap: true },
+        }, {
+          loader: "sass-loader",
+          options: { sourceMap: true },
+        }
+      ],
+    }, {
+    ...
+  },
+
+далле 
+
+`npm i --save-dev sass-loader node-sass`
+
+в ./src/index.js подключаем
+
+post css плагины (go to video)[https://youtu.be/qqTIqwQX8nc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=641] на примере autoprefixer
+
+[PostCSS](https://github.com/postcss/postcss)
+
+touch ./postcss.config.js
+
+указываем в postcss.config.js
+
+```
+module.exports = {
+  plugins: [
+      require('autoprefixer'),
+      require('css-mqpacker'), //группирует все media запросы в складыает их рядом в app.css
+      require('cssnano')({ // минификация
+          preset: [
+              'default', {
+                  discardComments: {
+                      removeAll: true,
+                  },
+              },
+          ],
+      })
+  ],
+};
+```
+
+Подключение autoprefixer (go to video)[https://youtu.be/qqTIqwQX8nc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=790]
+в `package.json` добавл.
+```
+...
+"browserslist": [
+    "> 1%",
+    "last 3 version"
+  ],
+...
+```
+
+ставим плагины
+
+`npm i --save-dev postcss-loader autoprefixer css-mqpacker cssnano`
+
+передаем в webpack.config.js postcss-loader
+
+```
+module: {
+    ...
+    }, {
+      test: /\.scss$/,
+      use: [
+        "style-loader",
+        MiniCssExtractPlugin.loader,
+        {
+          loader: "css-loader",
+          options: { sourceMap: true },
+        }, {
+          loader: "postcss-loader",
+          options: { sourceMap: true, config: { path: "./postcss.config.js" } },
+        }, {
+          loader: "sass-loader",
+          options: { sourceMap: true },
+        }
+      ],
+    }, {
+      test: /\.css$/,
+      use: [
+        MiniCssExtractPlugin.loader,
+        {
+          loader: "css-loader",
+          options: { sourceMap: true },
+        }, {
+          loader: "postcss-loader",
+          options: { sourceMap: true, config: { path: "./postcss.config.js" } },
+        },
+      ],
+    }],
+  },
+  ...
+```
+
