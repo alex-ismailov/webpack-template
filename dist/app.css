@@ -1,5 +1,2 @@
-.wrapper {
-  display: flex;
-}
+.wrapper{display:-webkit-box;display:-ms-flexbox;display:flex}
 h1{color:red}
-

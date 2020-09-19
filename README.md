@@ -36,7 +36,8 @@ module.exports = {
   }
 };
 ```
-* [filename: '[name].js' // про []](https://youtu.be/JcKRovPhGo8?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=858)
+
+* [filename: '[name].js' // про [] ](https://youtu.be/JcKRovPhGo8?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=858)
 * [path: path.resolve(__dirname, './dist')](https://youtu.be/JcKRovPhGo8?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=936)
 * [настройка babel](https://youtu.be/JcKRovPhGo8?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=1436)
 
@@ -76,6 +77,8 @@ window.Vue = require('vue'); // способ 3, считается наибол�
 
 ### [2 лекция](https://www.youtube.com/watch?v=qqTIqwQX8nc&list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&index=2) - Полная настройка Webpack 4 препроцессоров. Sass, настройка post css плагинов, минификация стилей.
 
+В этом уроке будем работать с препроцессорами.
+
 #### Подключение css и scss
 
 `mkdir ./src/css ./src/scss`
@@ -86,11 +89,13 @@ window.Vue = require('vue'); // способ 3, считается наибол�
 
 `import './css/main.css';`
 
-подключаем css-loader для отделения js от css ([got to video](https://youtu.be/qqTIqwQX8nc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=151))
+Для что бы webpack в дальнейшем поместил код css из ./src/main.css в отдельный файл `dist/app.css`, его необходимо отделить от js кода при помощи css-loader, для этого установим плагин mini-css-extract-plugin ([got to video](https://youtu.be/qqTIqwQX8nc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=151)):
 
 `npm i mini-css-extract-plugin --save-dev`
 
-указываем в `webpack.config.js` в разделе `module`:
+*как альтернатива есть еще css-extract-plugin, но 1й вариант предпочтительнее, так как mini создан под 4 webpack*.
+
+Затем в `webpack.config.js` подключаем обработчик css, для этого импортируем `MiniCssExtractPlugin` и в разделе `module` настраиваем rules для стилей:
 
 ```
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -119,7 +124,9 @@ module: {
     }),
   ],
 ```
-затем
+*текущий [name].js|css|и т.д. ссылается на ярлык app из entry point*
+
+затем установим пакеты, для обработки css кода:
 
 `npm i --save-dev css-loader style-loader`
 
@@ -127,7 +134,20 @@ module: {
 
 `<link rel="stylesheet" href="/dist/app.css">`
 
-Обработка scss ([got to video](https://youtu.be/qqTIqwQX8nc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=456))
+внесем что-нибудь в ./scr/main.css:
+```
+.wrapper {
+    display: flex;
+}
+```
+
+далее `npm rub build`
+
+теперь наш код разделяется на `.css` и `.js` файлы, и в папке `./dist` теперь два файла `app.js` и `app.css`
+
+##### Обработка scss ([got to video](https://youtu.be/qqTIqwQX8nc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=456))
+
+В массив use лучше передавать объекты, так как в объектах помимо названия loader с ним можно передать конфиг в `options`
 
 module: {
     rules: [{
@@ -149,17 +169,37 @@ module: {
     ...
   },
 
-далле 
+далее 
 
 `npm i --save-dev sass-loader node-sass`
 
-в ./src/index.js подключаем
+Укажем что-нибудь в `src/main.scss`:
 
-post css плагины (go to video)[https://youtu.be/qqTIqwQX8nc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=641] на примере autoprefixer
+```
+.wrapper {
+    h1 {
+        color: blue;
+    }
+}
+```
 
-[PostCSS](https://github.com/postcss/postcss)
+Далее в ./src/index.js подключаем scss
 
-touch ./postcss.config.js
+`import './scss/main.scss';`
+
+Теперь build еще подтянет стили scss в `./dist/app.css`
+
+`npm rub build`
+
+##### autoprefixer
+
+Далее разберемся с postCss плагинами на примере `autoprefixer` (go to video)[https://youtu.be/qqTIqwQX8nc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=641]
+
+[PostCSS on github](https://github.com/postcss/postcss)
+
+Для того чтобы было удобно подключать PostCss плагины созадим отдельный конфиг для postCss ./postcss.config.js
+
+`touch ./postcss.config.js`
 
 указываем в postcss.config.js
 
@@ -171,7 +211,7 @@ module.exports = {
       require('cssnano')({ // минификация
           preset: [
               'default', {
-                  discardComments: {
+                  discardComments: { // удаляет комменты с продакшена
                       removeAll: true,
                   },
               },
@@ -181,7 +221,8 @@ module.exports = {
 };
 ```
 
-Подключение autoprefixer (go to video)[https://youtu.be/qqTIqwQX8nc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=790]
+Далее настроим autoprefixer через package.json, если мы не знаем что именно писать, то можно взять настройки от автора: (go to video)[https://youtu.be/qqTIqwQX8nc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=790]
+
 в `package.json` добавл.
 ```
 ...
@@ -196,7 +237,7 @@ module.exports = {
 
 `npm i --save-dev postcss-loader autoprefixer css-mqpacker cssnano`
 
-передаем в webpack.config.js postcss-loader
+Затем в `webpack.config.js` передаем postcss-loader в scss и css обработчики:
 
 ```
 module: {
@@ -211,7 +252,9 @@ module: {
           options: { sourceMap: true },
         }, {
           loader: "postcss-loader",
-          options: { sourceMap: true, config: { path: "./postcss.config.js" } },
+          options: {
+            postcssOptions: { sourceMap: true, config: './postcss.config.js' }
+          },
         }, {
           loader: "sass-loader",
           options: { sourceMap: true },
@@ -226,7 +269,9 @@ module: {
           options: { sourceMap: true },
         }, {
           loader: "postcss-loader",
-          options: { sourceMap: true, config: { path: "./postcss.config.js" } },
+          options: {
+            postcssOptions: { sourceMap: true, config: './postcss.config.js' }
+          },
         },
       ],
     }],
@@ -234,3 +279,127 @@ module: {
   ...
 ```
 
+Одна из особенностей css-nano это то как он сжимает повторяющийся css код, такого рода код 
+```
+h1 {
+    color: blue;
+}
+h2 {
+    color: blue;
+}
+h3 {
+    color: blue;
+}
+```
+
+будет минифицирован в:
+```
+h1,h2,h3{color:#00f}
+```
+
+Далее напишем общий каскад для нашего scss, для этого реструктурируем папку ./src/scss/ и добавим туда файлы ((go to video)[https://youtu.be/qqTIqwQX8nc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=1064]):
+```
+/scss
+  /modules
+    wrapper.scss
+  /utils
+    fonts.scss
+    libs.scss
+    mixins.scss
+    reset.scss
+    vars.scss
+  main.scss
+```
+Первым делом ипортируем libs ((go to video)[https://youtu.be/qqTIqwQX8nc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=1082])
+
+в большинстве случаев css и sass библиотеки подключаются через ./src/scss/utils/libs.scss
+```
+// Sass librarys example:
+@import '../../node_modules/spinners/stylesheets/spinners';
+
+// CSS librarys example:
+@import '../../node_modules/flickity/dist/flickity.css';
+```
+которые уже в свою очередь импортируется в ./src/scss/main.scss
+```
+@import "utils/libs";
+@import "utils/vars";
+@import "utils/mixins";
+@import "utils/fonts";
+@import "utils/reset";
+```
+Далее рассмотрим vars.scss - @import "utils/vars" ((go to video)[https://youtu.be/qqTIqwQX8nc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=1138]);
+
+```
+// Font
+$mainFont                : 'Montserrat', Helvetica, Arial, sans-serif;
+
+// Size
+$mainFontColor           : #101010;
+$mainFontSize            : 18px;
+$mainFontWeight          : 400;
+$mainLineHeight          : 1.4;
+
+$desktopWidth            : 1280px;
+$smDesktopWidth          : 980px;
+$tableWidth              : 768px;
+$phoneWidth              : 480px;
+$smPhoneWidth            : 320px;
+
+// Main color
+$default-color           : #ffffff;
+$primary-color           : #444ce0;
+$success-color           : #26de81;
+$danger-color            : #fc5c65;
+$warning-color           : #fed330;
+$light-color             : #999999;
+$purple-color            : #8854d0;
+
+// Neutral Color
+$neutral-primary         : #303133;
+$neutral-regular         : #606266;
+$neutral-secondary       : #909399;
+$neutral-placeholder     : #C0C4CC;
+
+// Border Color
+$border-base             : #DCDFE6;
+$border-light            : #E4E7ED;
+$border-lighter          : #EBEEF5;
+$border-lightex          : #F2F6FC;
+```
+
+`$success-color: #26de81` - такое название лучше чем например $green-color.
+
+Затем идет адаптив - @import "utils/mixins"; - очень крутая штука ((go to video)[https://youtu.be/qqTIqwQX8nc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=1219])
+
+// src/scss/utils/mixins.scss
+
+```
+// px to rem
+@function rem($pixels, $context: $mainFontSize) {
+  @if (unitless($pixels)) {
+    $pixels: $pixels * 1px;
+  }
+  @if (unitless($context)) {
+    $context: $context * 1px;
+  }
+  @return $pixels / $context * 1rem;
+}
+
+@mixin size($width,$height: $width) {
+  width: $width;
+  height: $height;
+}
+
+@mixin placeholder {
+  ::-webkit-input-placeholder {@content}
+  :-moz-placeholder           {@content}
+  ::-moz-placeholder          {@content}
+  :-ms-input-placeholder      {@content}
+}
+```
+
+Особое внимание заслуживает mixin - @function
+
+Магия, адаптивный размер шрифта: https://youtu.be/qqTIqwQX8nc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=1387
+мы можем писать сколько угодно @madia запросов, css-mqpacker сгруппирует и оптимизирует их всех в одно место в app.css

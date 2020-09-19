@@ -5,7 +5,7 @@ module.exports = {
       require('cssnano')({ // минификация
           preset: [
               'default', {
-                  discardComments: {
+                  discardComments: { // удаляет комменты с продакшена
                       removeAll: true,
                   },
               },
