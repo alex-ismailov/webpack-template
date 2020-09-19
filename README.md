@@ -89,13 +89,13 @@ window.Vue = require('vue'); // способ 3, считается наибол�
 
 `import './css/main.css';`
 
-Для что бы webpack в дальнейшем поместил код css из ./src/main.css в отдельный файл `dist/app.css`, его необходимо отделить от js кода при помощи css-loader, для этого установим плагин mini-css-extract-plugin ([got to video](https://youtu.be/qqTIqwQX8nc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=151)):
+Для что бы webpack в дальнейшем поместил код css из `./src/main.css` в отдельный файл `dist/app.css`, его необходимо отделить от js кода при помощи css-loader, для этого установим плагин mini-css-extract-plugin ([got to video](https://youtu.be/qqTIqwQX8nc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=151)):
 
 `npm i mini-css-extract-plugin --save-dev`
 
 *как альтернатива есть еще css-extract-plugin, но 1й вариант предпочтительнее, так как mini создан под 4 webpack*.
 
-Затем в `webpack.config.js` подключаем обработчик css, для этого импортируем `MiniCssExtractPlugin` и в разделе `module` настраиваем rules для стилей:
+Затем в `webpack.config.js` подключаем обработчик css, для этого импортируем `MiniCssExtractPlugin` и в разделе `module` настраиваем `rules` для стилей:
 
 ```
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -134,7 +134,7 @@ module: {
 
 `<link rel="stylesheet" href="/dist/app.css">`
 
-внесем что-нибудь в ./scr/main.css:
+внесем что-нибудь в `./scr/main.css`:
 ```
 .wrapper {
     display: flex;
@@ -184,7 +184,7 @@ module: {
 }
 ```
 
-Далее в ./src/index.js подключаем scss
+Далее в `./src/index.js` подключаем scss
 
 `import './scss/main.scss';`
 
@@ -198,11 +198,11 @@ module: {
 
 [PostCSS on github](https://github.com/postcss/postcss)
 
-Для того чтобы было удобно подключать PostCss плагины созадим отдельный конфиг для postCss ./postcss.config.js
+Для того чтобы было удобно подключать PostCss плагины созадим отдельный конфиг для postCss `./postcss.config.js`
 
 `touch ./postcss.config.js`
 
-указываем в postcss.config.js
+указываем в `postcss.config.js`
 
 ```
 module.exports = {
@@ -222,7 +222,7 @@ module.exports = {
 };
 ```
 
-Далее настроим autoprefixer через package.json, если мы не знаем что именно писать, то можно взять настройки от автора: ([go to video](https://youtu.be/qqTIqwQX8nc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=790))
+Далее настроим `autoprefixer` через `package.json`, если мы не знаем что именно писать, то можно взять настройки от автора: ([go to video](https://youtu.be/qqTIqwQX8nc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=790))
 
 в `package.json` добавл.
 ```
@@ -342,7 +342,6 @@ h1,h2,h3{color:#00f}
 Затем идет адаптив - `@import "utils/mixins"`; - очень крутая штука ([go to video](https://youtu.be/qqTIqwQX8nc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=1219))
 
 // src/scss/utils/mixins.scss
-
 ```
 // px to rem
 @function rem($pixels, $context: $mainFontSize) {
