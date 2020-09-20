@@ -9,6 +9,7 @@
 * [1 лекция](#lecture-1)
 * [2 лекция](#lecture-2)
 
+---
 
 ### [1 лекция](https://www.youtube.com/watch?v=JcKRovPhGo8&list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV) ( [to contents](#contents) ) <a name="lecture-1"></a> - Настройка Webpack 4 шаблона. Установка Babel 7 и webpack dev server. Настройка js на примере vue
 
@@ -81,6 +82,7 @@ module: { //
 // import Vue from 'vue'; // способ 2
 window.Vue = require('vue'); // способ 3, считается наиболле приавильным.
 ```
+---
 
 ### [2 лекция](https://www.youtube.com/watch?v=qqTIqwQX8nc&list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&index=2) ( [to contents](#contents) ) <a name="lecture-2"></a> - Полная настройка Webpack 4 препроцессоров. Sass, настройка post css плагинов, минификация стилей.
 
