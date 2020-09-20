@@ -3,7 +3,11 @@
 
 По курсу от [Jack Coder](https://www.youtube.com/channel/UCDtQ4kJos22sCdYtNDB_4Cg) [Настройка Webpack 4](https://www.youtube.com/watch?v=JcKRovPhGo8&list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV)
 
-### [1 лекция](https://www.youtube.com/watch?v=JcKRovPhGo8&list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV) - Настройка Webpack 4 шаблона. Установка Babel 7 и webpack dev server. Настройка js на примере vue
+* [1 лекция](#lecture-1)
+* [2 лекция](#lecture-2)
+
+
+### [1 лекция](https://www.youtube.com/watch?v=JcKRovPhGo8&list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV) <a name="lecture-1"></a> - Настройка Webpack 4 шаблона. Установка Babel 7 и webpack dev server. Настройка js на примере vue
 
 `npm init`
 
@@ -75,7 +79,7 @@ module: { //
 window.Vue = require('vue'); // способ 3, считается наиболле приавильным.
 ```
 
-### [2 лекция](https://www.youtube.com/watch?v=qqTIqwQX8nc&list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&index=2) - Полная настройка Webpack 4 препроцессоров. Sass, настройка post css плагинов, минификация стилей.
+### [2 лекция](https://www.youtube.com/watch?v=qqTIqwQX8nc&list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&index=2) <a name="lecture-1"></a> - Полная настройка Webpack 4 препроцессоров. Sass, настройка post css плагинов, минификация стилей.
 
 В этом уроке будем работать с препроцессорами.
 
