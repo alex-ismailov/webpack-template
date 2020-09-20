@@ -98,7 +98,7 @@ window.Vue = require('vue'); // способ 3, считается наибол�
 
 `import './css/main.css';`
 
-Для что бы webpack в дальнейшем поместил код css из `./src/main.css` в отдельный файл `dist/app.css`, его необходимо отделить от js кода при помощи css-loader, для этого установим плагин mini-css-extract-plugin ([got to video](https://youtu.be/qqTIqwQX8nc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=151)):
+Для что бы webpack в дальнейшем поместил код css из `./src/main.css` в отдельный файл `dist/app.css`, его необходимо отделить от js кода при помощи css-loader, для этого установим плагин mini-css-extract-plugin ([go to video](https://youtu.be/qqTIqwQX8nc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=151)):
 
 `npm i mini-css-extract-plugin --save-dev`
 
