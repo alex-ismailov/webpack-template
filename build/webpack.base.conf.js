@@ -1,12 +1,11 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
-const htmlWebpackPlugin = require('html-webpack-plugin');
 const copyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const PATHS = {
-  src: path.join(__dirname, './src'),
-  dist: path.join(__dirname, './dist'),
+  src: path.join(__dirname, '../src'),
+  dist: path.join(__dirname, '../dist'),
   assets: 'assets/',
 };
 
@@ -40,7 +39,10 @@ module.exports = {
         MiniCssExtractPlugin.loader,
         {
           loader: 'css-loader',
-          options: { sourceMap: true },
+          options: { 
+            sourceMap: true,
+            // url: false,
+          },
         }, {
           loader: 'postcss-loader',
           options: {

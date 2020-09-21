@@ -388,7 +388,7 @@ h1,h2,h3{color:#00f}
 
 ### [3 лекция](https://www.youtube.com/watch?v=QF3EcxymIcc&list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&index=3) <a name="lecture-3"></a> - Самое важное по WEBPACK 4 - обработка картинок и html. Webpack-merge. Обработка статических файлов. ( [to contents](#contents) )
 
-Подключим Webpack-merge - для разделения на base, dev и build части конфига webpack.config.js
+Подключим пакет webpack-merge - для разделения на base, dev и build части конфига `webpack.config.js`.
 
 `npm i webpack-merge --save-dev`
 
@@ -401,7 +401,7 @@ h1,h2,h3{color:#00f}
 
 Зачем вообще разбивать webpack.dev.conf.js на отдельные конфиги см. [видео](https://youtu.be/QF3EcxymIcc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=571)
 
-В исходном файле package.json обновим ярлык dev и build:
+В исходном файле package.json обновим ярлык `dev` и `build`:
 ```
 "scripts": {
   "dev": "webpack-dev-server --open --config build/webpack.dev.conf.js",
@@ -410,7 +410,7 @@ h1,h2,h3{color:#00f}
 ```
 Заполним webpack конфиги:
 
-// webpack.build.conf.js
+*`// webpack.build.conf.js`*
 ```
 const { merge } = require('webpack-merge');
 const baseWebpackConfig = require('./webpack.base.conf');
@@ -426,9 +426,7 @@ module.exports = new Promise((res, reject) => {
 
 ```
 
-[настройка devServer](https://youtu.be/QF3EcxymIcc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=861) в webpack.dev.conf.js
-
-// webpack.dev.conf.js
+*`// webpack.dev.conf.js`*
 ```
 const webpack = require('webpack');
 const { merge } = require('webpack-merge');
@@ -455,40 +453,171 @@ module.exports = new Promise((resolve, _reject) => {
   resolve(devWebpackConfig);
 });
 ```
-[Adout webpack.SourceMapDevToolPlugin](https://youtu.be/QF3EcxymIcc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=958)
+[настройка devServer](https://youtu.be/QF3EcxymIcc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=861) в webpack.dev.conf.js
+
+Карта сайта - [webpack.SourceMapDevToolPlugin](https://youtu.be/QF3EcxymIcc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=958)
 
 Теперь выполнив `npm run dev` в devTools браузера можно увидеть, что на каждую строчку css кода выводится корректный scss файл.
 
-Далее поправим `webpack.base.conf.js`:
+Далее поправим `webpack.base.conf.js`, добавим в него глобальную переменную `PATHS` ([go to video](https://youtu.be/QF3EcxymIcc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=1116)), в дальнейшем это поможет легко менять пути, а также структуру итогового проекта.
 
-// webpack.base.conf.js
-.....
-
-Переносим `index.html` из корня проекта в `./src`
-
+*`// webpack.base.conf.js`*
+```
+...
+const PATHS = {
+  src: path.join(__dirname, '../src'),
+  dist: path.join(__dirname, '../dist'),
+  assets: 'assets/',
+};
+```
 * [про externals](https://youtu.be/QF3EcxymIcc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=1193)
 * [точка входа - entry](https://youtu.be/QF3EcxymIcc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=1241)
 * [точка выхода - output.filename](https://youtu.be/QF3EcxymIcc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=1276)
 * [publicPath](https://youtu.be/QF3EcxymIcc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=1332)
 * [для css](https://youtu.be/QF3EcxymIcc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=1454)
 
+Затем переносим `index.html` из корня проекта в `./src`
 
-Далее поправим `webpack.base.conf.js`, добавим в него глобальную переменную `PATHS` ([go to video](https://youtu.be/QF3EcxymIcc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=1116))
-
-Теперь разберемся с картинками и с копированием самого html
+Теперь разберемся с картинками и с копированием самого html, для этого установим необходимые плагины:
 
 `npm i --save-dev file-loader copy-webpack-plugin html-webpack-plugin`
 
-Далее добавим эти плагины в раздел plugins конфига webpack.base.conf.js ([go to video](https://youtu.be/QF3EcxymIcc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=1534))
+Далее добавим эти плагины в раздел `module.plugins` конфига `webpack.base.conf.js` ([go to video](https://youtu.be/QF3EcxymIcc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=1534))
 
-....
+*`// webpack.base.conf.js`*
+```
+...
+plugins: [
+  ...
+  new HtmlWebpackPlugin({
+    hash: false,
+    template: `${PATHS.src}/index.html`,
+  }),
+  new copyWebpackPlugin({
+    patterns: [
+      { from: `${PATHS.src}/img`, to: `${PATHS.assets}img` },
+      { from: `${PATHS.src}/static`, to: '' },
+    ],
+  }),
+],
+...
+```
 
-Для того чтобы обработать картинки необходимо добавим лоадер для картинок `file-loader` в `webpack.base.conf.js` в разделе `modules.rules` ([go to video](https://youtu.be/QF3EcxymIcc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=1774))
+Для того чтобы обработать картинки необходимо добавить loader для картинок `file-loader` в `webpack.base.conf.js` в разделе `modules.rules` ([go to video](https://youtu.be/QF3EcxymIcc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=1774))
 
 Про `./src/index.html` в режиме `dev`([go to video](https://youtu.be/QF3EcxymIcc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=1888))
 
 
+Далее подключим картинки ([go to video](https://youtu.be/QF3EcxymIcc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=1973))
 
+Не правильный способ подключить картинку:
+Вставлять картинки через css плохо!!! ([go to video](https://youtu.be/QF3EcxymIcc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=2099))
 
+Правильный способ подключать картинки через html:
 
+`<img src="/assets/img/funny-dog.jpg" alt="">`
 
+Чтобы не засорять корневое пространство проекта, правильно хранить конфиги webapck в папке `./build`, поэтому перенесем 3 конфига dev, build и base в папку `./build`, после этого обязательно необходимо поправить `src` и `dist` в `PATHS`:
+```
+const PATHS = {
+  src: path.join(__dirname, '../src'), // ищем на уровень выше ../
+  dist: path.join(__dirname, '../dist'), // ищем на уровень выше ../
+  assets: 'assets/',
+};
+```
+
+##### Итоговый webpack.base.conf.js
+
+*`// webpack.base.conf.js`*
+```
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const path = require('path');
+const copyWebpackPlugin = require('copy-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+const PATHS = {
+  src: path.join(__dirname, '../src'),
+  dist: path.join(__dirname, '../dist'),
+  assets: 'assets/',
+};
+
+module.exports = {
+  externals: {
+    paths: PATHS,
+  },
+  entry: {
+    app: PATHS.src,
+  },
+  output: {
+    filename: `${PATHS.assets}js/[name].js`,
+    path: PATHS.dist,
+    publicPath: '/',
+  },
+  module: {
+    rules: [{
+      test: /\.(png|jpg|gif|svg)$/,
+      loader: 'file-loader',
+      options: {
+        name: '[name].[ext]'
+      },
+    }, {
+      test: /\.js$/,
+      loader: 'babel-loader',
+      exclude: '/node-modules/',
+    },{
+      test: /\.scss$/,
+      use: [
+        'style-loader',
+        MiniCssExtractPlugin.loader,
+        {
+          loader: 'css-loader',
+          options: { 
+            sourceMap: true,
+            // url: false,
+          },
+        }, {
+          loader: 'postcss-loader',
+          options: {
+            // postcssOptions: { sourceMap: true, config: './postcss.config.js' }
+            postcssOptions: { sourceMap: true }
+          },
+        }, {
+          loader: 'sass-loader',
+          options: { sourceMap: true },
+        }
+      ],
+    }, {
+      test: /\.css$/,
+      use: [
+        'style-loader',
+        MiniCssExtractPlugin.loader,
+        {
+          loader: 'css-loader',
+          options: { sourceMap: true },
+        }, {
+          loader: 'postcss-loader',
+          options: {
+            // postcssOptions: { sourceMap: true, config: './postcss.config.js' }
+            postcssOptions: { sourceMap: true }
+          },
+        },
+      ],
+    }],
+  },
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: `${PATHS.assets}css/[name].css`,
+    }),
+    new HtmlWebpackPlugin({
+      hash: false,
+      template: `${PATHS.src}/index.html`,
+    }),
+    new copyWebpackPlugin({
+      patterns: [
+        { from: `${PATHS.src}/img`, to: `${PATHS.assets}img` },
+        { from: `${PATHS.src}/static`, to: '' },
+      ],
+    }),
+  ],
+};
+```
