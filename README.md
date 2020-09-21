@@ -10,6 +10,7 @@
 #### Оглавление
 * [1 лекция](#lecture-1)
 * [2 лекция](#lecture-2)
+* [3 лекция](#lecture-3)
 
 ---
 
@@ -382,3 +383,112 @@ h1,h2,h3{color:#00f}
 
 Магия, адаптивный размер шрифта: ([go to video](https://youtu.be/qqTIqwQX8nc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=1387))
 мы можем писать сколько угодно @media запросов, css-mqpacker сгруппирует и оптимизирует их всех в одно место в app.css
+
+---
+
+### [3 лекция](https://www.youtube.com/watch?v=QF3EcxymIcc&list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&index=3) <a name="lecture-3"></a> - Самое важное по WEBPACK 4 - обработка картинок и html. Webpack-merge. Обработка статических файлов. ( [to contents](#contents) )
+
+Подключим Webpack-merge - для разделения на base, dev и build части конфига webpack.config.js
+
+`npm i webpack-merge --save-dev`
+
+Создадим отдельные части webpack конфига:
+* webpack.base.conf.js - базовый для мерджа
+* webpack.build.conf.js - конфигурации для билда
+* webpack.dev.conf.js - конфигурации для дева
+
+`touch webpack.base.conf.js webpack.build.conf.js webpack.dev.conf.js`
+
+Зачем вообще разбивать webpack.dev.conf.js на отдельные конфиги см. [видео](https://youtu.be/QF3EcxymIcc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=571)
+
+В исходном файле package.json обновим ярлык dev и build:
+```
+"scripts": {
+  "dev": "webpack-dev-server --open --config build/webpack.dev.conf.js",
+  "build": "webpack --config build/webpack.build.conf.js"
+},
+```
+Заполним webpack конфиги:
+
+// webpack.build.conf.js
+```
+const { merge } = require('webpack-merge');
+const baseWebpackConfig = require('./webpack.base.conf');
+
+const buildWebpackConfig = merge(baseWebpackConfig, {
+  mode: 'production',
+  plugins: [],
+});
+
+module.exports = new Promise((res, reject) => {
+  resolve(buildWebpackConfig);
+});
+
+```
+
+[настройка devServer](https://youtu.be/QF3EcxymIcc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=861) в webpack.dev.conf.js
+
+// webpack.dev.conf.js
+```
+const webpack = require('webpack');
+const { merge } = require('webpack-merge');
+const baseWebpackConfig = require('./webpack.base.conf');
+
+const devWebpackConfig = merge(baseWebpackConfig, {
+  mode: 'development',
+  devtool: 'cheap-module-eval-source-map',
+  devServer: {
+    port: 8081,
+    overlay: {
+      warnings: true,
+      errors: true,
+    },
+  },
+  plugins: [
+    new webpack.SourceMapDevToolPlugin({
+      filename: '[file].map',
+    }),
+  ],
+});
+
+module.exports = new Promise((resolve, _reject) => {
+  resolve(devWebpackConfig);
+});
+```
+[Adout webpack.SourceMapDevToolPlugin](https://youtu.be/QF3EcxymIcc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=958)
+
+Теперь выполнив `npm run dev` в devTools браузера можно увидеть, что на каждую строчку css кода выводится корректный scss файл.
+
+Далее поправим `webpack.base.conf.js`:
+
+// webpack.base.conf.js
+.....
+
+Переносим `index.html` из корня проекта в `./src`
+
+* [про externals](https://youtu.be/QF3EcxymIcc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=1193)
+* [точка входа - entry](https://youtu.be/QF3EcxymIcc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=1241)
+* [точка выхода - output.filename](https://youtu.be/QF3EcxymIcc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=1276)
+* [publicPath](https://youtu.be/QF3EcxymIcc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=1332)
+* [для css](https://youtu.be/QF3EcxymIcc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=1454)
+
+
+Далее поправим `webpack.base.conf.js`, добавим в него глобальную переменную `PATHS` ([go to video](https://youtu.be/QF3EcxymIcc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=1116))
+
+Теперь разберемся с картинками и с копированием самого html
+
+`npm i --save-dev file-loader copy-webpack-plugin html-webpack-plugin`
+
+Далее добавим эти плагины в раздел plugins конфига webpack.base.conf.js ([go to video](https://youtu.be/QF3EcxymIcc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=1534))
+
+....
+
+Для того чтобы обработать картинки необходимо добавим лоадер для картинок `file-loader` в `webpack.base.conf.js` в разделе `modules.rules` ([go to video](https://youtu.be/QF3EcxymIcc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=1774))
+
+Про `./src/index.html` в режиме `dev`([go to video](https://youtu.be/QF3EcxymIcc?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=1888))
+
+
+
+
+
+
