@@ -621,4 +621,125 @@ module.exports = {
   ],
 };
 ```
+---
 
+### [4 лекция](https://www.youtube.com/watch?v=LXkSIqqgyPI&list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&index=4) <a name="lecture-4"></a> - Подключение VUE и VUEX, забываем jQuery. Использование vuejs в верстке. ( [to contents](#contents) )
+
+`npm i vue`
+
+Подключаем vue в `./src/index.js`: `window.Vue = require('vue');`
+
+`Vue.component('example-component', require('./components/Example.vue').default);`
+
+Затем в `webpack.base.conf.js` в разделе `в module.rules` добавляем обработчик для Vue.js:
+
+```
+module.exports = {
+  ...
+  module: {
+    rules: [{
+    ...
+    }, {
+      test: /\.vue$/,
+      loader: 'vue-loader',
+      options: {
+        loader: {
+          scss: 'vue-style-loader!css-loader!sass-loader'
+        }
+      }
+    }, {
+    ...
+  },
+  ...
+```
+
+`npm i vue-loader vue-style-loader vue-template-compiler --save-dev`
+
+Затем регистрируем в `webpack.base.conf.js` в плагинах `VueLoaderPlugin`:
+
+```
+  ...
+  plugins: [
+    new VueLoaderPlugin(),
+    ...
+  ],
+};
+```
+Далее делаем alias для `vue`:
+
+```
+module.exports = {
+  ...
+  module: {
+    ...
+  },
+  resolve: {
+    alias: {
+      'vue$': 'vue/dist/vue.js'
+    }
+  },
+  plugins: [
+    ...
+  ],
+};
+```
+Далее нинциализируем `vue` в `./src/index.js`:
+
+```
+const app = new Vue({
+  el: '#app'
+});
+```
+
+затем воспользуемся им в `./src/index.html`:
+
+`<example-component v-if="showExampleComponent"></example-component>`
+
+Подключение сторонних библиотек:
+
+Подключим store `vuex` (аналог redux) ([go to video](https://youtu.be/LXkSIqqgyPI?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=831)):
+
+`npm i vuex`
+
+создаем `./store/index.js`, затем его необходимо экпортировать в главный `./src/index.js`:
+
+```
+import store from './store.js';
+
+const app = new Vue({
+  store,
+  el: '#app'
+});
+```
+Далее добавляем vuex в `store/index.js`:
+
+```
+import Vue from 'vue'
+import Vuex from 'vuex'
+
+Vue.use(Vuex)
+
+import example from './example'
+
+export default new Vuex.Store({
+  modules: {
+    example
+  }
+});
+```
+Далее добавляем `store/example.js` в нем указываем:
+
+```
+export default {
+  state: {
+    message: 'hello vuex'
+  },
+  mutations: {},
+  actions: {},
+  getters: {
+    getMessage (state) {
+      return state.message;
+    },
+  },
+};
+```
