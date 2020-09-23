@@ -16,7 +16,7 @@
 
 ---
 
-<a name="lecture-1"></a> ### [1 лекция](https://www.youtube.com/watch?v=JcKRovPhGo8&list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV) - Настройка Webpack 4 шаблона. Установка Babel 7 и webpack dev server. Настройка js на примере vue. ([to contents](#contents))
+### [1 лекция](https://www.youtube.com/watch?v=JcKRovPhGo8&list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV) <a name="lecture-1"></a> - Настройка Webpack 4 шаблона. Установка Babel 7 и webpack dev server. Настройка js на примере vue. ([to contents](#contents))
 
 `npm init`
 
@@ -89,7 +89,7 @@ window.Vue = require('vue'); // способ 3, считается наибол�
 ```
 ---
 
-<a name="lecture-2"></a> ### [2 лекция](https://www.youtube.com/watch?v=qqTIqwQX8nc&list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&index=2) - Полная настройка Webpack 4 препроцессоров. Sass, настройка post css плагинов, минификация стилей. ([to contents](#contents))
+### [2 лекция](https://www.youtube.com/watch?v=qqTIqwQX8nc&list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&index=2) <a name="lecture-2"></a> - Полная настройка Webpack 4 препроцессоров. Sass, настройка post css плагинов, минификация стилей. ([to contents](#contents))
 
 В этом уроке будем работать с препроцессорами.
 
@@ -388,7 +388,7 @@ h1,h2,h3{color:#00f}
 
 ---
 
-<a name="lecture-3"></a> ### [3 лекция](https://www.youtube.com/watch?v=QF3EcxymIcc&list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&index=3) - Самое важное по WEBPACK 4 - обработка картинок и html. Webpack-merge. Обработка статических файлов. ([to contents](#contents))
+### [3 лекция](https://www.youtube.com/watch?v=QF3EcxymIcc&list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&index=3) <a name="lecture-3"></a> - Самое важное по WEBPACK 4 - обработка картинок и html. Webpack-merge. Обработка статических файлов. ([to contents](#contents))
 
 Подключим пакет webpack-merge - для разделения на base, dev и build части конфига `webpack.config.js`.
 
@@ -625,7 +625,7 @@ module.exports = {
 ```
 ---
 
-<a name="lecture-4"></a> ### [4 лекция](https://www.youtube.com/watch?v=LXkSIqqgyPI&list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&index=4) - Подключение VUE и VUEX, забываем jQuery. Использование vuejs в верстке. ([to contents](#contents))
+### [4 лекция](https://www.youtube.com/watch?v=LXkSIqqgyPI&list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&index=4) <a name="lecture-4"></a> - Подключение VUE и VUEX, забываем jQuery. Использование vuejs в верстке. ([to contents](#contents))
 
 `npm i vue`
 
@@ -748,7 +748,7 @@ export default {
 
 ---
 
-<a name="lecture-5"></a> ### [5 лекция](https://www.youtube.com/watch?v=eMesm6Ef4VA&list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&index=5) - Ускоряем загрузку JS в 3-4 раза. Code Splitting и vendors.js. ([to contents](#contents))
+### [5 лекция](https://www.youtube.com/watch?v=eMesm6Ef4VA&list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&index=5) <a name="lecture-5"></a> - Ускоряем загрузку JS в 3-4 раза. Code Splitting и vendors.js. ([to contents](#contents))
 
 Начнем со сплитов. ([Что такое split](https://youtu.be/eMesm6Ef4VA?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=41)).
 
