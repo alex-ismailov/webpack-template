@@ -4,7 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Webpack Template</title>
+  <% for (css in htmlWebpackPlugin.files.css) { %>
+    <link 
+    href="<%= htmlWebpackPlugin.files.css[css] %>"
+    rel="stylesheet">
+  <% } %>
+  <!-- <title>Webpack Template</title> -->
+  <title><%= htmlWebpackPlugin.options.title || 'Webpack App' %></title>
 </head>
 <body>
 
@@ -37,5 +43,8 @@
     </div> <!-- end #app wrapper -->
   </div> <!-- end main wrapper -->
 
+  <% for (index in htmlWebpackPlugin.files.js) { %>
+    <script src="<%= htmlWebpackPlugin.files.js[index] %>" type="text/javascript"></script>
+  <% } %>
 </body>
 </html>

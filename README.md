@@ -12,6 +12,7 @@
 * [2 лекция](#lecture-2)
 * [3 лекция](#lecture-3)
 * [4 лекция](#lecture-4)
+* [5 лекция](#lecture-5)
 
 ---
 
@@ -744,3 +745,147 @@ export default {
   },
 };
 ```
+
+---
+
+### [5 лекция](https://www.youtube.com/watch?v=eMesm6Ef4VA&list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&index=5) <a name="lecture-5"></a> - Ускоряем загрузку JS в 3-4 раза. Code Splitting и vendors.js. ( [to contents](#contents) )
+
+Начнем со сплитов. ([Что такое split](https://youtu.be/eMesm6Ef4VA?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=41)).
+
+Наш текущий код помещается в `app.js`, код сторонних библиотек в `vendors.js`;
+
+Начнем оптимизацию, для этого изменим `webpack.base.conf.js` ([go to video](https://youtu.be/eMesm6Ef4VA?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=443)), пропишем св-во `module.optimization`:
+
+```
+module.exports = {
+  externals: {
+    ...
+  },
+  entry: {
+    ...
+  },
+  output: {
+    ...
+  },
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+       vendor: {
+          name: 'vendors',
+          test: /node_modules/,
+          chunks: 'all',
+          enforce: true,
+        },
+      }
+    }
+  },
+  module: {
+   ...
+  },
+  resolve: {
+    ...
+  },
+  plugins: [
+    ...
+  ],
+};
+```
+Теперь в devTools браузера можно увидеть, что подгружаются два скрипта:
+
+```
+<script src="/assets/js/vendors.js"></script>
+<script src="/assets/js/app.js"></script>
+```
+Затем добавим хеши в имена файлов ([go to video](https://youtu.be/eMesm6Ef4VA?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=756))
+
+Изменим раздел `module.output` в `webpack.base.conf.js`:
+
+```
+output: {
+    filename: `${PATHS.assets}js/[name].[contenthash].js`,
+    ...
+  },
+```
+и раздел `module.plugins`
+
+```
+plugins: [
+    ...
+    new MiniCssExtractPlugin({
+      filename: `${PATHS.assets}css/[name].[contenthash].css`,
+    }),
+    ...
+  ],
+```
+
+Также мы можем разбить на отдельные чанки наш текущий код, если например какой-то из наших модулей будет не обязателен для какой-нибудь группы пользователей, и грузить его по сети будет пустой тратой времени. 
+([go to video](https://youtu.be/eMesm6Ef4VA?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=908))
+
+Создадим `./src/lk.js`, в дальнейшем в нем уже могут быть различные импорты. Пока для примера просто добавим в него:
+
+`console.log('you entered your lk');`
+
+Далее добавим для него точку входа:
+
+```
+entry: {
+    app: PATHS.src,
+    lk: `${PATHS.src}/lk.js`,
+  },
+```
+
+##### ejs синтаксис
+Далее рассмотрим ситуацию когда мы например хотим указать `<link href="/assets/css/app.9483590e2b427b7aeb37.css" rel="stylesheet">` внутри `head` файла `src/index.html` в ручную ([go to video](https://youtu.be/eMesm6Ef4VA?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=1201)).
+
+Для этого необходимо выкл. автомат. `inject`:
+
+`//webpack.base.conf.js`
+
+```
+...
+new HtmlWebpackPlugin({
+  ...
+  inject: false,
+}),
+...
+```
+теперь мы можем в ручную указать `<link>...</link>` в `src/index.html` и он не будет дублироваться в итоговом html документе.
+
+Но теперь мы сталкиваемся с одной проблемой ([go to video](https://youtu.be/eMesm6Ef4VA?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=1297)). Мы не можем каждый раз прописывать новый хэш файла в ручную, если хэш файла изменился, так как мы выкл. автомат. `inject`, поэтому воспользуемся синтаксисом `ejs` ([look at github ejs syntax](`[.ejs](https://github.com/jaketrent/html-webpack-template/blob/master/index.ejs):`)):
+
+вмeсто `<link href="/assets/css/app.d3d50b5f7ad42a6641e5.css" rel="stylesheet">` добавим в head файла `./src/index.html`
+
+```
+<% for (key in htmlWebpackPlugin.files.css) { %>
+    <link 
+    href="<%= htmlWebpackPlugin.files.css[css] %>"
+    rel="stylesheet">
+  <% } %>
+```
+Далее мы можеи сделать тоже самое для js скриптов в конце документа ([look fix for video](https://github.com/jantimon/html-webpack-plugin/issues/1388#issuecomment-614025285)):
+
+```
+<% for (index in htmlWebpackPlugin.files.js) { %>
+  <script src="<%= htmlWebpackPlugin.files.js[index] %>" type="text/javascript"></script>
+<% } %>
+```
+такой подход также можно применять например и для `title` документа:
+
+`<title><%= htmlWebpackPlugin.options.title || 'Webpack App' %></title>`
+
+затем добавим в 
+
+```
+plugins: [
+    ...
+    new HtmlWebpackPlugin({
+      ...
+      title: 'Webpack template', // <- data for title
+    }),
+    ...
+  ],
+```
+
+Помимо всего этого такой подход можно комбинировать с включенным `inject: true`
+
+---
