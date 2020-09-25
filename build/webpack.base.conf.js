@@ -54,7 +54,6 @@ module.exports = {
       loader: 'file-loader',
       options: {
         name: '[name].[ext]',
-        // outputPath: 'assets/fonts',
         outputPath: `${PATHS.assets}fonts`,
       }
     }, {
@@ -105,7 +104,8 @@ module.exports = {
   },
   resolve: {
     alias: {
-      'vue$': 'vue/dist/vue.js'
+      '~': 'src',
+      'vue$': 'vue/dist/vue.js',
     }
   },
   plugins: [
@@ -120,7 +120,7 @@ module.exports = {
     }),
     new copyWebpackPlugin({
       patterns: [
-        { from: `${PATHS.src}/img`, to: `${PATHS.assets}img` },
+        { from: `${PATHS.src}/${PATHS.assets}img`, to: `${PATHS.assets}img` },
         // { from: `${PATHS.src}/fonts`, to: `${PATHS.assets}fonts` }, // определил в rules
         { from: `${PATHS.src}/static`, to: '' },
       ],

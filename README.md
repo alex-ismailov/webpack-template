@@ -902,7 +902,9 @@ plugins: [
 }
 ```
 
-?????????????????????????????????????????????????????????????
+---
+????????????????????? Вопросы по лекции ??????????????????????
+
 У автора шрифты подгружаются из `dist/assets/fonts/....` ([go to video](https://youtu.be/jWdcw7qkqT0?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=206)). Но у меня так не заработало. Работает если только грузить шрифты из `src/fonts/....` вот так `src: url('../fonts/HelveticaNeueCyr/Black/.....)`.
 
 ---
@@ -927,8 +929,8 @@ plugins: [
 @include font-face("TT Norms"," /assets/fonts/TTNorms-Thin", 100, normal, woff woff2); или
 @include font-face("TT Norms", "/assets/fonts/TTNorms-Italic", 400, italic, woff woff2);; то есть для одного семейства шрифта меняется только путь к файлу, толщина шрифта и начертание (курсив и тд), но не название. Таким образом для этого шрифта достаточно будет менять в css только толщину и font-style
 ?????????????????????????????????????????????????????????????
+---
 
-Webpack обработка шрифта:
 Чтобы Webpack понимал как нужно обрабатывать шрифты в файле конфига (build/webpack.base.conf.js) укажем:
 ```
 ...
@@ -946,3 +948,30 @@ Webpack обработка шрифта:
 
 `mkdir ./src/assets`
 
+и перенесем в нее `/css`, `/scss`, `/img` и `fonts`.
+
+Затем добавляем `assets/` в путь:
+
+```
+new copyWebpackPlugin({
+  patterns: [
+    { from: `${PATHS.src}/${PATHS.assets}img`, to: `${PATHS.assets}img` },
+    ...
+  ],
+}),
+```
+и в `src/index.js` меняем:
+```
+import './assets/css/main.css';
+import './assets/scss/main.scss';
+```
+Создадим универсальный *alias* ([go to video](https://youtu.be/jWdcw7qkqT0?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=773))
+
+```
+alias: {
+  '~': 'src',
+  ...
+}
+```
+
+---
