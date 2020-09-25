@@ -921,12 +921,12 @@ plugins: [
 		}
 
 ---
-[go to comment](https://www.youtube.com/watch?v=jWdcw7qkqT0&lc=UgwHYmaqFXHwpz3NCRp4AaABAg)
-
 Ребят, запомните: .eot, .ttf, .svg и прочие форматы НЕ НУЖНЫ! Даже IE9 поддерживает woff. 
 Далее подлючайте через миксин font-face (я использую такой: https://gist.github.com/jonathantneal/d0460e5c2d5d7f9bc5e6). Используется так: 
 @include font-face("TT Norms"," /assets/fonts/TTNorms-Thin", 100, normal, woff woff2); или
-@include font-face("TT Norms", "/assets/fonts/TTNorms-Italic", 400, italic, woff woff2);; то есть для одного семейства шрифта меняется только путь к файлу, толщина шрифта и начертание (курсив и тд), но не название. Таким образом для этого шрифта достаточно будет менять в css только толщину и font-style
+@include font-face("TT Norms", "/assets/fonts/TTNorms-Italic", 400, italic, woff woff2);; то есть для одного семейства шрифта меняется только путь к файлу, толщина шрифта и начертание (курсив и тд), но не название. Таким образом для этого шрифта достаточно будет менять в css только толщину и font-style.
+
+[go to comment](https://www.youtube.com/watch?v=jWdcw7qkqT0&lc=UgwHYmaqFXHwpz3NCRp4AaABAg)
 
 ?????????????????????????????????????????????????????????????
 
