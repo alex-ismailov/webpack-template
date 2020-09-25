@@ -907,6 +907,7 @@ plugins: [
 
 У автора шрифты подгружаются из `dist/assets/fonts/....` ([go to video](https://youtu.be/jWdcw7qkqT0?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=206)). Но у меня так не заработало. Работает если только грузить шрифты из `src/fonts/....` вот так `src: url('../fonts/HelveticaNeueCyr/Black/.....)`.
 
+---
 Дублируются шрифты в корень билда => ([go to comment](https://www.youtube.com/watch?v=jWdcw7qkqT0&lc=UgxPNJm_opn14psVRVh4AaABAg.8yQ6IXCmfCa9C90ppY8HSo))
 
 Убираешь объект шрифтов из CopyWebpackPlugin и для file-loader шрифтов в options (т.е. на одном уровне с name) добавляешь ключ outputhPath: 'assets/fonts'. Вот что получится:
@@ -919,6 +920,7 @@ plugins: [
 			}
 		}
 
+---
 [go to comment](https://www.youtube.com/watch?v=jWdcw7qkqT0&lc=UgwHYmaqFXHwpz3NCRp4AaABAg)
 
 Ребят, запомните: .eot, .ttf, .svg и прочие форматы НЕ НУЖНЫ! Даже IE9 поддерживает woff. 
