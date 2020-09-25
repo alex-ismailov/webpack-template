@@ -3,6 +3,7 @@ const path = require('path');
 const copyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { VueLoaderPlugin } = require('vue-loader');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 const PATHS = {
   src: path.join(__dirname, '../src'),
@@ -37,12 +38,6 @@ module.exports = {
   },
   module: {
     rules: [{
-      test: /\.(png|jpg|gif|svg)$/,
-      loader: 'file-loader',
-      options: {
-        name: '[name].[ext]'
-      },
-    }, {
       test: /\.js$/,
       loader: 'babel-loader',
       exclude: '/node-modules/',
@@ -54,6 +49,20 @@ module.exports = {
           scss: 'vue-style-loader!css-loader!sass-loader'
         }
       }
+    },{
+      test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+      loader: 'file-loader',
+      options: {
+        name: '[name].[ext]',
+        // outputPath: 'assets/fonts',
+        outputPath: `${PATHS.assets}fonts`,
+      }
+    }, {
+      test: /\.(png|jpg|gif|svg)$/,
+      loader: 'file-loader',
+      options: {
+        name: '[name].[ext]'
+      },
     }, {
       test: /\.scss$/,
       use: [
@@ -112,8 +121,10 @@ module.exports = {
     new copyWebpackPlugin({
       patterns: [
         { from: `${PATHS.src}/img`, to: `${PATHS.assets}img` },
+        // { from: `${PATHS.src}/fonts`, to: `${PATHS.assets}fonts` }, // определил в rules
         { from: `${PATHS.src}/static`, to: '' },
       ],
     }),
+    new CleanWebpackPlugin(),
   ],
 };

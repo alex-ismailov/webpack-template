@@ -13,6 +13,7 @@
 * [3 лекция](#lecture-3)
 * [4 лекция](#lecture-4)
 * [5 лекция](#lecture-5)
+* [6 лекция](#lecture-6)
 
 ---
 
@@ -889,3 +890,59 @@ plugins: [
 Помимо всего этого такой подход можно комбинировать с включенным `inject: true`
 
 ---
+
+### [6 лекция](https://www.youtube.com/watch?v=jWdcw7qkqT0&list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&index=6) <a name="lecture-5"></a> - Лучший способ подключения и обработки шрифтов. ([to contents](#contents))
+
+Для того чтобы подключить шрифты нужно прописать в файле `./src/scss/utils/fonts.scss` следующее: (на примере шрифта helvetica)
+```
+// HelveticaNeueCyr - BLACK
+@font-face {
+  font-family: "HelveticaNeueCyr-Black";
+  src: url('../fonts/HelveticaNeueCyr/Black/HelveticaNeueCyr-Black.woff') format('woff'), /* Pretty Modern Browsers */
+}
+```
+
+?????????????????????????????????????????????????????????????
+У автора шрифты подгружаются из `dist/assets/fonts/....` ([go to video](https://youtu.be/jWdcw7qkqT0?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=206)). Но у меня так не заработало. Работает если только грузить шрифты из `src/fonts/....` вот так `src: url('../fonts/HelveticaNeueCyr/Black/.....)`.
+
+---
+
+Дублируются шрифты в корень билда => ([go to comment](https://www.youtube.com/watch?v=jWdcw7qkqT0&lc=UgxPNJm_opn14psVRVh4AaABAg.8yQ6IXCmfCa9C90ppY8HSo))
+
+Убираешь объект шрифтов из CopyWebpackPlugin и для file-loader шрифтов в options (т.е. на одном уровне с name) добавляешь ключ outputhPath: 'assets/fonts'. Вот что получится:
+		{
+			test: /\.(ttf|woff|woff2|eot)$/,
+			loader: 'file-loader',
+			options: {
+				name: '[name].[ext]',
+				outputPath: 'assets/fonts'
+			}
+		}
+
+---
+
+[go to comment](https://www.youtube.com/watch?v=jWdcw7qkqT0&lc=UgwHYmaqFXHwpz3NCRp4AaABAg)
+Ребят, запомните: .eot, .ttf, .svg и прочие форматы НЕ НУЖНЫ! Даже IE9 поддерживает woff. 
+Далее подлючайте через миксин font-face (я использую такой: https://gist.github.com/jonathantneal/d0460e5c2d5d7f9bc5e6). Используется так: 
+@include font-face("TT Norms"," /assets/fonts/TTNorms-Thin", 100, normal, woff woff2); или
+@include font-face("TT Norms", "/assets/fonts/TTNorms-Italic", 400, italic, woff woff2);; то есть для одного семейства шрифта меняется только путь к файлу, толщина шрифта и начертание (курсив и тд), но не название. Таким образом для этого шрифта достаточно будет менять в css только толщину и font-style
+?????????????????????????????????????????????????????????????
+
+Webpack обработка шрифта:
+Чтобы Webpack понимал как нужно обрабатывать шрифты в файле конфига (build/webpack.base.conf.js) укажем:
+```
+...
+{
+  test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+  loader: 'file-loader',
+  options: {
+    name: '[name].[ext]',
+    outputPath: 'assets/fonts',
+  }
+},
+...
+```
+Далее оптимизируем структуру `./src`:
+
+`mkdir ./src/assets`
+
