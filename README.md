@@ -891,7 +891,7 @@ plugins: [
 
 ---
 
-### [6 лекция](https://www.youtube.com/watch?v=jWdcw7qkqT0&list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&index=6) <a name="lecture-5"></a> - Лучший способ подключения и обработки шрифтов. ([to contents](#contents))
+### [6 лекция](https://www.youtube.com/watch?v=jWdcw7qkqT0&list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&index=6) <a name="lecture-6"></a> - Лучший способ подключения и обработки шрифтов. ([to contents](#contents))
 
 Для того чтобы подключить шрифты нужно прописать в файле `./src/scss/utils/fonts.scss` следующее: (на примере шрифта helvetica)
 ```
