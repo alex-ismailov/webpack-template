@@ -14,6 +14,7 @@
 * [4 лекция](#lecture-4)
 * [5 лекция](#lecture-5)
 * [6 лекция](#lecture-6)
+* [7 лекция](#lecture-7)
 
 ---
 
@@ -974,3 +975,29 @@ alias: {
 ```
 
 ---
+
+### [7 лекция](https://www.youtube.com/watch?v=GaLS93JBeng&list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&index=7) <a name="lecture-7"></a> - Лучший способ подключения и обработки шрифтов. ([to contents](#contents))
+
+Как создавать новые страницы ([go to video](https://youtu.be/GaLS93JBeng?list=PLkCrmfIT6LBQWN02hNj6r1daz7965GxsV&t=375))
+
+
+```
+const PAGES_DIR = `${PATHS.src}/pages`;
+const PAGES = fs
+  .readdirSync(PAGES_DIR)
+  .filter(fileName => fileName.endsWith('.html'));
+```
+
+```
+plugins: [
+  ...
+  ...PAGES.map((page) => new HtmlWebpackPlugin({
+    template: `${PAGES_DIR}/${page}`,
+    filename: `./${page}`,
+  })),
+  ...
+],
+```
+
+Автор кладет index.html в ./src/pages , но у меня так не работает, не получается изменить entry point. Поэтому главный index.html оcтавляю в ./src, а все остальные html странички складываю в ./src/pages.
+

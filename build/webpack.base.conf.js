@@ -1,5 +1,6 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
+const fs = require('fs');
 const copyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { VueLoaderPlugin } = require('vue-loader');
@@ -11,12 +12,18 @@ const PATHS = {
   assets: 'assets/',
 };
 
+const PAGES_DIR = `${PATHS.src}/pages`;
+const PAGES = fs
+  .readdirSync(PAGES_DIR)
+  .filter(fileName => fileName.endsWith('.html'));
+
 module.exports = {
   externals: {
     paths: PATHS,
   },
   entry: {
     app: PATHS.src,
+    // app: `${PATHS.src}/html`,
     lk: `${PATHS.src}/lk.js`,
   },
   output: {
@@ -49,7 +56,7 @@ module.exports = {
           scss: 'vue-style-loader!css-loader!sass-loader'
         }
       }
-    },{
+    }, {
       test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
       loader: 'file-loader',
       options: {
@@ -125,6 +132,10 @@ module.exports = {
         { from: `${PATHS.src}/static`, to: '' },
       ],
     }),
+    ...PAGES.map((page) => new HtmlWebpackPlugin({
+      template: `${PAGES_DIR}/${page}`,
+      filename: `./${page}`,
+    })),
     new CleanWebpackPlugin(),
   ],
 };
