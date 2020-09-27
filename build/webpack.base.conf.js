@@ -12,10 +12,11 @@ const PATHS = {
   assets: 'assets/',
 };
 
-const PAGES_DIR = `${PATHS.src}/pages`;
+// const PAGES_DIR = `${PATHS.src}/pages`;
+const PAGES_DIR = `${PATHS.src}/pug/pages`;
 const PAGES = fs
   .readdirSync(PAGES_DIR)
-  .filter(fileName => fileName.endsWith('.html'));
+  .filter(fileName => fileName.endsWith('.pug'));
 
 module.exports = {
   externals: {
@@ -23,7 +24,6 @@ module.exports = {
   },
   entry: {
     app: PATHS.src,
-    // app: `${PATHS.src}/html`,
     lk: `${PATHS.src}/lk.js`,
   },
   output: {
@@ -48,6 +48,9 @@ module.exports = {
       test: /\.js$/,
       loader: 'babel-loader',
       exclude: '/node-modules/',
+    }, {
+      test: /\.pug$/,
+      loader: 'pug-loader',
     }, {
       test: /\.vue$/,
       loader: 'vue-loader',
@@ -120,11 +123,6 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: `${PATHS.assets}css/[name].[contenthash].css`,
     }),
-    new HtmlWebpackPlugin({
-      template: `${PATHS.src}/index.html`,
-      inject: false,
-      title: 'Webpack template'
-    }),
     new copyWebpackPlugin({
       patterns: [
         { from: `${PATHS.src}/${PATHS.assets}img`, to: `${PATHS.assets}img` },
@@ -134,8 +132,20 @@ module.exports = {
     }),
     ...PAGES.map((page) => new HtmlWebpackPlugin({
       template: `${PAGES_DIR}/${page}`,
-      filename: `./${page}`,
+      // inject: false,
+      filename: `./${page.replace(/.pug/, '.html')}`,
+      // filename: `./pages/${page}`,
     })),
+    // ...PAGES.map((page) => new HtmlWebpackPlugin({
+    //   template: `${PAGES_DIR}/${page}`,
+    //   inject: false,
+    //   filename: `./${page}`,
+    //   // filename: `./pages/${page}`,
+    // })),
+    // new HtmlWebpackPlugin({
+    //   template:  `${PAGES_DIR}/index.html`,
+    //   inject: false,
+    // }), // дублирует index.html
     new CleanWebpackPlugin(),
   ],
 };
