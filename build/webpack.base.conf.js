@@ -9,15 +9,14 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const PATHS = {
   src: path.join(__dirname, '../src'),
   dist: path.join(__dirname, '../dist'),
-  // src: `${__dirname}/../src`,
-  // dist: `${__dirname}/../dist`,
   assets: 'assets/',
 };
 
-const PAGES_DIR = `${PATHS.src}/pages`;
+// const PAGES_DIR = `${PATHS.src}/pages`;
+const PAGES_DIR = `${PATHS.src}/pug/pages`;
 const PAGES = fs
   .readdirSync(PAGES_DIR)
-  .filter(fileName => fileName.endsWith('.html'));
+  .filter(fileName => fileName.endsWith('.pug'));
 
 module.exports = {
   externals: {
@@ -49,6 +48,9 @@ module.exports = {
       test: /\.js$/,
       loader: 'babel-loader',
       exclude: '/node-modules/',
+    }, {
+      test: /\.pug$/,
+      loader: 'pug-loader',
     }, {
       test: /\.vue$/,
       loader: 'vue-loader',
@@ -130,13 +132,20 @@ module.exports = {
     }),
     ...PAGES.map((page) => new HtmlWebpackPlugin({
       template: `${PAGES_DIR}/${page}`,
-      filename: `./${page}`,
+      // inject: false,
+      filename: `./${page.replace(/.pug/, '.html')}`,
+      // filename: `./pages/${page}`,
     })),
-    // new HtmlWebpackPlugin({
-    //   template: `${PATHS.src}/index.html`,
+    // ...PAGES.map((page) => new HtmlWebpackPlugin({
+    //   template: `${PAGES_DIR}/${page}`,
     //   inject: false,
-    //   title: 'Webpack template'
-    // }),
+    //   filename: `./${page}`,
+    //   // filename: `./pages/${page}`,
+    // })),
+    // new HtmlWebpackPlugin({
+    //   template:  `${PAGES_DIR}/index.html`,
+    //   inject: false,
+    // }), // дублирует index.html
     new CleanWebpackPlugin(),
   ],
 };
