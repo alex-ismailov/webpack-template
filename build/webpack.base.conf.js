@@ -9,6 +9,8 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const PATHS = {
   src: path.join(__dirname, '../src'),
   dist: path.join(__dirname, '../dist'),
+  // src: `${__dirname}/../src`,
+  // dist: `${__dirname}/../dist`,
   assets: 'assets/',
 };
 
@@ -23,7 +25,6 @@ module.exports = {
   },
   entry: {
     app: PATHS.src,
-    // app: `${PATHS.src}/html`,
     lk: `${PATHS.src}/lk.js`,
   },
   output: {
@@ -120,11 +121,6 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: `${PATHS.assets}css/[name].[contenthash].css`,
     }),
-    new HtmlWebpackPlugin({
-      template: `${PATHS.src}/index.html`,
-      inject: false,
-      title: 'Webpack template'
-    }),
     new copyWebpackPlugin({
       patterns: [
         { from: `${PATHS.src}/${PATHS.assets}img`, to: `${PATHS.assets}img` },
@@ -136,6 +132,11 @@ module.exports = {
       template: `${PAGES_DIR}/${page}`,
       filename: `./${page}`,
     })),
+    // new HtmlWebpackPlugin({
+    //   template: `${PATHS.src}/index.html`,
+    //   inject: false,
+    //   title: 'Webpack template'
+    // }),
     new CleanWebpackPlugin(),
   ],
 };
